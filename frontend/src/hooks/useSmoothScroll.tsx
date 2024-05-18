@@ -10,7 +10,7 @@ const useLocoScroll = (start: boolean) => {
   gsap.registerPlugin(ScrollTrigger);
 
   useLayoutEffect(() => {
-    // if (!start) return;
+    if (!start) return;
 
     const scrollEl = document.querySelector(
       "[data-scroll-container]"
@@ -21,7 +21,7 @@ const useLocoScroll = (start: boolean) => {
       multiplier: 1,
     });
 
-    // locoScroll.init();
+    locoScroll.init();
 
     locoScroll.on("scroll", ScrollTrigger.update);
 
@@ -61,7 +61,7 @@ const useLocoScroll = (start: boolean) => {
     console.log("loco");
 
     return () => {
-      //   locoScroll.destroy();
+      locoScroll.destroy();
       ScrollTrigger.removeEventListener("refresh", lsUpdate);
     };
   }, [start]);

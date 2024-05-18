@@ -1,14 +1,10 @@
 import Footer from "@/components/Footer";
 
-import CursorFollower from "@/components/CursorFollower";
-
-import { useLayoutEffect } from "react";
-
-//@ts-expect-error ignore types
-import LocomotiveScroll from "locomotive-scroll";
-
+import Scrollbar from "smooth-scrollbar";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { useLayoutEffect, useState } from "react";
+
 type Props = {
   children: React.ReactNode;
 };
@@ -16,70 +12,54 @@ type Props = {
 const MainLayout = ({ children }: Props) => {
   gsap.registerPlugin(ScrollTrigger);
 
+  const [y, setY] = useState(0);
   useLayoutEffect(() => {
-    // if (!start) return;
+    gsap.registerPlugin(ScrollTrigger);
 
-    const scrollEl = document.querySelector(
-      "[data-scroll-container]"
-    ) as HTMLDivElement;
-    const locoScroll = new LocomotiveScroll({
-      el: scrollEl,
-      smooth: true,
-      multiplier: 1,
+    const scroller = document.querySelector("#container") as HTMLDivElement;
+
+    const bodyScrollBar = Scrollbar.init(scroller, {
+      damping: 0.1,
+      delegateTo: document,
+      alwaysShowTracks: true,
     });
 
-    // locoScroll.init();
+    bodyScrollBar.addListener(({ offset }) => {
+      setY(offset.y);
+      const nav = document.querySelector("nav");
+      if (!nav) return;
+      nav.style.top = offset.y + "px";
+      nav.style.left = offset.x + "px";
+    });
 
-    locoScroll.on("scroll", ScrollTrigger.update);
-
-    ScrollTrigger.scrollerProxy(scrollEl, {
+    ScrollTrigger.scrollerProxy("#container", {
       scrollTop(value) {
-        return arguments.length
-          ? locoScroll.scrollTo(value, 0, 0)
-          : locoScroll.scroll.instance.scroll.y;
+        if (arguments.length && value) {
+          bodyScrollBar.scrollTop = value;
+        }
+        return bodyScrollBar.scrollTop;
       },
       scrollLeft(value) {
-        return arguments.length
-          ? locoScroll.scrollTo(value, 0, 0)
-          : locoScroll.scroll.instance.scroll.x;
-      },
-      pinType: scrollEl.style.transform ? "transform" : "fixed",
-      getBoundingClientRect() {
-        return {
-          top: 0,
-          left: 0,
-          width: window.innerWidth,
-          height: window.innerHeight,
-        };
+        if (arguments.length && value) {
+          bodyScrollBar.scrollLeft = value;
+        }
+        return bodyScrollBar.scrollLeft;
       },
     });
 
-    const lsUpdate = () => {
-      if (locoScroll) {
-        locoScroll.update();
-      }
-    };
-
-    ScrollTrigger.defaults({ scroller: scrollEl });
-
-    ScrollTrigger.addEventListener("refresh", lsUpdate);
-    ScrollTrigger.refresh();
-    //ScrollTrigger.refresh();
-    return () => {
-      //   locoScroll.destroy();
-      ScrollTrigger.removeEventListener("refresh", lsUpdate);
-    };
+    bodyScrollBar.addListener(ScrollTrigger.update);
+    ScrollTrigger.defaults({ scroller: scroller });
+    return () => {};
   }, []);
+
   return (
-    <div
-      className="flex flex-col min-h-screen relative has-scroll-smooth smooth-scroll"
-      id="container"
-      data-scroll-container
-    >
-      <CursorFollower />
+    <div className="flex flex-col min-h-screen relative" id="container">
+      {/* <CursorFollower y={y} /> */}
 
       {/* <NavBar /> */}
+
       <div className="flex-1">{children}</div>
+
       <Footer />
     </div>
   );
