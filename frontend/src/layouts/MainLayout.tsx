@@ -54,7 +54,7 @@ const MainLayout = ({ children }: Props) => {
 
   return (
     <div className="flex flex-col min-h-screen relative" id="container">
-      {/* <CursorFollower y={y} /> */}
+      <CursorFollower y={y} />
 
       {/* <NavBar /> */}
 
