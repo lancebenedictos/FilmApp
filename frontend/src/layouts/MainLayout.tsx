@@ -8,11 +8,7 @@ type Props = {
 
 const MainLayout = ({ children }: Props) => {
   return (
-    <div
-      className="flex flex-col min-h-screen relative"
-      data-scroll-container
-      id="container"
-    >
+    <div className="flex flex-col min-h-screen relative scroll-smooth">
       <CursorFollower />
 
       {/* <NavBar /> */}

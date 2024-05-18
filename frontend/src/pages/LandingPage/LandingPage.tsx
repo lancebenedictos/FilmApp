@@ -7,6 +7,7 @@ import { Heart } from "lucide-react";
 import AlbumList from "./components/AlbumList";
 
 gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(ScrollTrigger);
 
 const LandingPage = () => {
   const container = useRef<HTMLDivElement>(null);
