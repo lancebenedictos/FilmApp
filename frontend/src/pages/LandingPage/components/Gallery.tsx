@@ -23,6 +23,7 @@ const Gallery = () => {
   return (
     <div
       className={`header flex flex-nowrap w-[250vw] h-screen relative bg-[#D8CDAB]`}
+      data-scroll-section
       ref={header}
     ></div>
   );

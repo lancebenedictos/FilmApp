@@ -10,8 +10,6 @@ const useLocoScroll = (start: boolean) => {
   gsap.registerPlugin(ScrollTrigger);
 
   useLayoutEffect(() => {
-    if (!start) return;
-
     const scrollEl = document.querySelector(
       "[data-scroll-container]"
     ) as HTMLDivElement;
@@ -21,21 +19,15 @@ const useLocoScroll = (start: boolean) => {
       multiplier: 1,
     });
 
-    locoScroll.init();
-
     locoScroll.on("scroll", ScrollTrigger.update);
 
     ScrollTrigger.scrollerProxy(scrollEl, {
       scrollTop(value) {
         return arguments.length
-          ? locoScroll.scrollTo(value, 0, 0)
+          ? locoScroll.scrollTo(value, { duration: 0, disableLerp: true })
           : locoScroll.scroll.instance.scroll.y;
       },
-      scrollLeft(value) {
-        return arguments.length
-          ? locoScroll.scrollTo(value, 0, 0)
-          : locoScroll.scroll.instance.scroll.x;
-      },
+
       pinType: scrollEl.style.transform ? "transform" : "fixed",
       getBoundingClientRect() {
         return {
@@ -53,17 +45,9 @@ const useLocoScroll = (start: boolean) => {
       }
     };
 
-    ScrollTrigger.defaults({ scroller: scrollEl });
-
     ScrollTrigger.addEventListener("refresh", lsUpdate);
     ScrollTrigger.refresh();
-    //ScrollTrigger.refresh();
-    console.log("loco");
-
-    return () => {
-      locoScroll.destroy();
-      ScrollTrigger.removeEventListener("refresh", lsUpdate);
-    };
+    ScrollTrigger.defaults({ scroller: scrollEl });
   }, [start]);
 };
 

@@ -7,7 +7,7 @@ import { Heart } from "lucide-react";
 import AlbumList from "./components/AlbumList";
 
 gsap.registerPlugin(useGSAP);
-gsap.registerPlugin(ScrollTrigger);
+
 const LandingPage = () => {
   const container = useRef<HTMLDivElement>(null);
   const heart = useRef<HTMLDivElement>(null);
@@ -77,8 +77,11 @@ const LandingPage = () => {
   return (
     <div className="overflow-hidden relative" ref={container}>
       <Gallery />
-      <div className=" flex items-center font-black text-9xl mix-blend-overlay header-text heart-container relative w-screen">
-        <h1>FILMBYPAULA</h1>
+      <div
+        className=" flex items-center font-black text-9xl  header-text heart-container relative w-screen"
+        data-scroll-section
+      >
+        <h1 data-scroll-sticky>FILMBYPAULA</h1>
         <div className=" inline-block heart " ref={heart}>
           <Heart size={128} />
         </div>
