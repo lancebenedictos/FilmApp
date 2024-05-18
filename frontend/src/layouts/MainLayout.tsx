@@ -25,7 +25,7 @@ const MainLayout = ({ children }: Props) => {
     });
 
     bodyScrollBar.addListener(({ offset }) => {
-      setY(offset.y);
+      // setY(offset.y);
       const nav = document.querySelector("nav");
       if (!nav) return;
       nav.style.top = offset.y + "px";
