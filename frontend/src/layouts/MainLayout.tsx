@@ -2,7 +2,7 @@ import Footer from "@/components/Footer";
 import Scrollbar from "smooth-scrollbar";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from "gsap";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import CursorFollower from "@/components/CursorFollower";
 
 type Props = {
@@ -12,7 +12,7 @@ type Props = {
 const MainLayout = ({ children }: Props) => {
   gsap.registerPlugin(ScrollTrigger);
 
-  const [y, setY] = useState(0);
+  // const [y, setY] = useState(0);
   useLayoutEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -54,7 +54,7 @@ const MainLayout = ({ children }: Props) => {
 
   return (
     <div className="flex flex-col min-h-screen relative" id="container">
-      <CursorFollower y={y} />
+      <CursorFollower />
 
       {/* <NavBar /> */}
 
